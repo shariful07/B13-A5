@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    <!-- Login Page -->
     <section class="flex items-center justify-center h-screen">
         <fieldset class="fieldset bg-white border-base-300 rounded-box w-xs border p-4">
             <div class="text-center mb-5">
@@ -24,12 +25,12 @@
                 <p>Sign in to manage your issues</p>
             </div>
             <label class="label">Username</label>
-            <input type="text" class="input" placeholder="Enter Username" />
-            <span class="mb-4 block text-muted">Default: admin</span>
+            <input id="username-inp" type="text" class="input" placeholder="Enter Username" />
+            <span class="mb-3 block text-muted">Default: admin</span>
             <label class="label">Password</label>
-            <input type="password" class="input" placeholder="Enter Password" />
+            <input id="password-inp" type="password" class="input" placeholder="Enter Password" />
             <span class="mb-4 block text-muted">Default: admin123</span>
-            <button class="btn btn-primary mt-4">Sign In</button>
+            <button id="login-btn" class="btn btn-primary mt-4">Sign In</button>
         </fieldset>
     </section>
 
