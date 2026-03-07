@@ -1,4 +1,9 @@
 * {
     font-family: "Geist", sans-serif;
+}
+
+body {
     background: #F8FAFC;
+    margin: 0;
+    padding: 0;
 }
