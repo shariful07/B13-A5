@@ -48,12 +48,14 @@ function filterIssue(id) {
 let allIssues = [];
 
 async function loadIssues() {
+    const loadingSpinner = document.getElementById('spinner');
+    loadingSpinner.classList.remove('hidden');
     const res = await fetch('https://phi-lab-server.vercel.app/api/v1/lab/issues');
     const data = await res.json();
+    loadingSpinner.classList.add('hidden');
     allIssues = data.data;
     renderIssues(allIssues);
 }
-loadIssues();
 
 function renderIssues(issues) {
     const issueContainer = document.getElementById('issue-container');
@@ -67,7 +69,7 @@ function renderIssues(issues) {
         issueEl.className = `bg-white rounded-lg shadow h-[100%] border-t-4 ${borderColor}`;
         issueEl.innerHTML = `
         
-                    <div class="p-4">
+                    <div class="p-4" onclick="modalDetails(${issue.id})">
                         <div class="flex justify-between mb-3">
                             <img src="./assets/Open-Status.png" alt="">
                             <span
@@ -92,3 +94,48 @@ function renderIssues(issues) {
         issueContainer.appendChild(issueEl);
     });
 }
+
+const issueModal = document.getElementById('issue-modal');
+async function modalDetails(id) {
+    const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`)
+    const issue = await res.json();
+    const issueData = issue.data;
+    issueModal.showModal();
+    const div = document.createElement('div');
+    div.className = 'modal-box lg:min-w-[700px]';
+    div.innerHTML = `
+    <div class="p-4">
+        <h3 class="text-2xl font-semibold mb-2">${issueData.title}</h3>
+        <ul class="flex gap-4 text-[12px] text-gray-500 mb-3">
+            <li> <span class="bg-[#00A96E] text-white text-xs font-semibold px-2 py-1 rounded-full">${issueData.status}</span></li>
+            <li>Opened by ${issueData.author}</li>
+            <li>${new Date(issueData.createdAt).toLocaleDateString()}</li>
+        </ul>
+        <div class="flex flex-wrap gap-2 mb-3">
+            ${issueData.labels.map(label => `<span class="bg-yellow-100 text-yellow-600 text-xs font-semibold px-2 py-1 rounded-full">${label}</span>`).join('')}
+        </div>
+        <p class="text-[16px] text-gray-600">${issueData.description}</p>
+    </div>
+    <div class="flex bg-[#F8FAFC] rounded-md justify-between p-4">
+        <div class="text-sm text-gray-500 flex justify-between items-center">
+            <div><b>Assignee:</b> <br>
+                ${issueData.assignee}
+            </div>
+        </div>
+        <div>
+            Priority: <br>
+            <span class="bg-red-100 text-red-600 text-xs font-semibold px-2 py-1 rounded-full">${issueData.priority}</span>
+        </div>
+    </div>  
+    
+    <div class="modal-action">
+        <form method="dialog">
+            <button class="btn btn-primary border-0">Close</button>
+        </form>
+    </div>
+    `;
+    issueModal.innerHTML = '';
+    issueModal.appendChild(div);
+}
+
+loadIssues();
