@@ -138,4 +138,17 @@ async function modalDetails(id) {
     issueModal.appendChild(div);
 }
 
+async function searchIssue() {
+    const searchInput = document.getElementById('search-inp');
+    const query = searchInput.value.trim().toLowerCase();
+
+    const res = await fetch(`https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${query}`);
+    const data = await res.json();
+    const allIssues = data.data;
+    const filteredIssues = allIssues.filter(issue => issue.title.toLowerCase().includes(query));
+    renderIssues(filteredIssues);
+}
+
+
+
 loadIssues();
