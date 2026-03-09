@@ -76,14 +76,17 @@ function renderIssues(issues) {
                         <h3 class="text-sm font-semibold mb-2">${issue.title}</h3>
                         <p class="text-[12px] text-gray-600 mb-4">${issue.description}</p>
                         <div class="flex flex-wrap gap-2">
-                            <span
-                                class="bg-red-100 text-red-600 text-xs font-semibold px-2 py-1 rounded-full">BUG</span>
-                            <span
-                                class="bg-yellow-100 text-yellow-600 text-xs font-semibold px-2 py-1 rounded-full">HELP
-                                WANTED</span>
+                            ${issue.labels.map(label => `<span class="bg-yellow-100 text-yellow-600 text-xs font-semibold px-2 py-1 rounded-full">${label}</span>`).join('')}
                         </div>
                     </div>
-                    <div class="text-sm text-gray-500 border-t border-gray-300 p-4">by ${issue.author} <br> ${issue.createdAt}</div>
+                    <div class="text-sm text-gray-500 border-t border-gray-300 p-4 flex justify-between items-center">
+                        <div>#${issue.id} by ${issue.author} </div>
+                        <div>${new Date(issue.createdAt).toLocaleDateString()}</div>
+                    </div>
+                    <div class="text-sm text-gray-500 px-4 pb-4 flex justify-between items-center">
+                      <div>Assignee: ${issue.assignee}</div>
+                      <div>${new Date(issue.updatedAt).toLocaleDateString()}</div>
+                    </div>
         
         `;
         issueContainer.appendChild(issueEl);
